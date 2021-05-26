@@ -1,0 +1,13 @@
+version: '2'
+services:
+  python-boilerplate:
+    build: .
+    container_name: 'python-boilerplate'
+    tty: true
+    volumes:
+      - './src:/data/src'
+      - './tests:/data/tests'
+      - './work:/data/work'
+      - './config:/data/config'
+      - './log:/data/log'
+    working_dir: '/data/src'
