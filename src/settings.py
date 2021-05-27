@@ -25,4 +25,5 @@ def _build_path(path):
         raise FileNotFoundError(abspath)
 
 settings_dict = load_json('../config/settings.json')
-# secrets_dict = load_json('../config/secrets.json')
+kindle_lib_path = settings_dict['kindle_lib_path']
+
