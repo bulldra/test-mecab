@@ -2,3 +2,4 @@ logzero==1.7.0
 pytest==3.0.7
 requests==2.25.1
 pandas==1.2.4
+mecab-python3==1.0.3

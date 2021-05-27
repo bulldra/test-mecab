@@ -1,8 +1,8 @@
 version: '2'
 services:
-  python-boilerplate:
+  mecab-test:
     build: .
-    container_name: 'python-boilerplate'
+    container_name: 'mecab-test'
     tty: true
     volumes:
       - './src:/data/src'
