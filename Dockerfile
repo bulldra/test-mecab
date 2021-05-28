@@ -6,8 +6,8 @@ ENV PIP_NO_CACHE_DIR=on
 ENV PIP_DISABLE_PIP_VERSION_CHECK=on
 
 RUN apt-get update -y && apt-get install -y \
-    git curl make xz-utils file sudo \
-    mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8 \
+        git curl make xz-utils file sudo \
+        mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
