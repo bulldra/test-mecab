@@ -1,0 +1,1 @@
+docker-compose run --entrypoint "python /data/src/kindle_lib.py" mecab-test
