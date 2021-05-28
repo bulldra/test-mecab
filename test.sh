@@ -1,1 +1,1 @@
-docker-compose run -e "PYTHONPATH=./" --entrypoint "pytest /data/tests/" python-boilerplate
+docker-compose run -e "PYTHONPATH=./" --entrypoint "pytest /data/tests/" mecab-test
