@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 __version__ = "0.1.0"
 
 import main
 
-def test_main():
+def test_main1():
     expect = [
         {'term': '', 'pos': 'BOS/EOS'},
         {'term': '私', 'pos': '名詞'},
@@ -22,4 +23,13 @@ def test_main():
         {'term': '。', 'pos': '記号'},
         {'term': '', 'pos': 'BOS/EOS'}]
     actual = main.Main().execute('私はpythonでmecabを扱うテストをしています。')
+    assert expect == actual
+
+def test_main2():
+    expect = [
+        {'term': '', 'pos': 'BOS/EOS'},
+        {'term': 'テスト', 'pos': '名詞'},
+        {'term': 'する', 'pos': '動詞'},
+        {'term': '', 'pos': 'BOS/EOS'}]
+    actual = main.Main().execute('テストする')
     assert expect == actual
