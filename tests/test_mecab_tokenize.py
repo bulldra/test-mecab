@@ -2,10 +2,12 @@
 # -*- coding: utf-8 -*-
 __version__ = "0.1.0"
 
-import main
+import mecab_tokenize
+import collections
 
 
-def test_main1():
+def test_tokenize1():
+    text = '私はpythonでmecabを扱うテストをしています。'
     expect = [
         {'term': '私', 'pos': '名詞-代名詞-一般'},
         {'term': 'は', 'pos': '助詞-係助詞'},
@@ -21,14 +23,24 @@ def test_main1():
         {'term': 'ます', 'pos': '助動詞'},
         {'term': '。', 'pos': '記号-句点'},
     ]
-    actual = main.Main().tokenize('私はpythonでmecabを扱うテストをしています。')
+    actual = mecab_tokenize.MecabTokenize().tokenize(text)
     assert(expect == actual)
 
 
-def test_main2():
+def test_tokenize2():
+    text = 'テストする'
     expect = [
         {'term': 'テスト', 'pos': '名詞-サ変接続'},
         {'term': 'する', 'pos': '動詞-自立'},
     ]
-    actual = main.Main().tokenize('テストする')
+    actual = mecab_tokenize.MecabTokenize().tokenize(text)
+    assert(expect == actual)
+
+
+def test_freq():
+    text = 'mecab mecabテストmecabテストツール'
+    expect = collections.Counter(
+        {'mecab': 3, 'テスト': 2, 'ツール': 1}
+    )
+    actual = mecab_tokenize.MecabTokenize().freq(text)
     assert(expect == actual)

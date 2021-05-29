@@ -6,9 +6,10 @@ import argparse
 import logzero
 import settings
 import MeCab
+import collections
 
 
-class Main:
+class MecabTokenize:
     def __init__(self):
         logzero.logfile(
             settings.logfile,
@@ -22,9 +23,16 @@ class Main:
         term_list = self.tokenize(args.args1)
         print(term_list)
 
+        freq_list = self.freq(args.args1)
+        print(freq_list)
+
     def tokenize(self, text):
         p = [li.split('\t') for li in self.mecab.parse(text).splitlines()]
         return [{'term': li[0], 'pos': li[1]} for li in p if len(li) == 2]
+
+    def freq(self, text):
+        term_list = [t['term'] for t in self.tokenize(text)]
+        return collections.Counter(term_list)
 
 
 if(__name__ == '__main__'):
@@ -35,4 +43,4 @@ if(__name__ == '__main__'):
     )
     parser.add_argument('args1')
     args = parser.parse_args()
-    Main().main(args)
+    MecabTokenize().main(args)
