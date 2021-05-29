@@ -21,9 +21,8 @@ class EpubTokenize:
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
-        book = epub.read_epub(args.args1)
         text = ''
-        for item in book.get_items():
+        for item in epub.read_epub(args.args1).get_items():
             if item.get_type() == ebooklib.ITEM_DOCUMENT:
                 text += re.sub(r'<.+?>', '', item.get_content().decode())
         print(mecab_tokenize.MecabTokenize().freq(text))
