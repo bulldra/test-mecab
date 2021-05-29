@@ -18,7 +18,7 @@ class KindleLib:
             loglevel=20, maxBytes=1e6, backupCount=3
         )
         self.logger = logzero.logger
-        self.mecab = MeCab.Tagger('-d /usr/local/etc/mecab-ipadic-neologd')
+        self.mecab = MeCab.Tagger(settings.mecab_param)
         self.lib = pandas.read_csv(settings.kindle_lib_path, sep='\t')
 
     def main(self, args):
