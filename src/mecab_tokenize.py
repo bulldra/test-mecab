@@ -21,9 +21,11 @@ class MecabTokenize:
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
         term_list = self.tokenize(args.args1)
+        print('単語品詞リスト')
         print(term_list)
 
         freq_list = self.freq(args.args1)
+        print('\n単語出現リスト')
         print(freq_list)
 
     def tokenize(self, text):
@@ -31,8 +33,7 @@ class MecabTokenize:
         return [{'term': li[0], 'pos': li[1]} for li in p if len(li) == 2]
 
     def freq(self, text):
-        term_list = [t['term'] for t in self.tokenize(text)]
-        return collections.Counter(term_list)
+        return collections.Counter([t['term'] for t in self.tokenize(text)])
 
 
 if(__name__ == '__main__'):
