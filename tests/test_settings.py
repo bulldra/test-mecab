@@ -14,6 +14,10 @@ def test_load_json():
     assert(settings_dict['logfile'] == '../log/info.log')
 
 
+def test_logfile():
+    assert(settings.logfile == '../log/info.log')
+
+
 def test_build_path():
     path = settings._build_path('../config/settings.json')
     assert(path == '/data/config/settings.json')

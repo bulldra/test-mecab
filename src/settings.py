@@ -21,6 +21,6 @@ def _build_path(path):
 
 
 settings_dict = load_json('../config/settings.json')
-logfile = settings_dict['kindle_lib_path']
+logfile = settings_dict['logfile']
 kindle_lib_path = settings_dict['kindle_lib_path']
 mecab_param = settings_dict['mecab_param']
