@@ -11,7 +11,8 @@ import MeCab
 class Main:
     def __init__(self):
         logzero.logfile(
-            settings.logfile, loglevel=20, maxBytes=1e6, backupCount=3
+            settings.logfile,
+            loglevel=20, maxBytes=1e6, backupCount=3
         )
         self.logger = logzero.logger
         self.mecab = MeCab.Tagger(settings.mecab_param)
@@ -30,8 +31,8 @@ if(__name__ == '__main__'):
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '--version',
-        action='version',
-        version=f'{__version__}')
+        action='version', version=f'{__version__}'
+    )
     parser.add_argument('args1')
     args = parser.parse_args()
     Main().main(args)
