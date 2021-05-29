@@ -13,3 +13,4 @@ urllib3==1.26.4
 certifi==2020.12.5
 setuptools==56.0.0
 mecab-python3==1.0.3
+unidic-lite==1.0.8

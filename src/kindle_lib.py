@@ -10,6 +10,7 @@ import pandas
 import re
 import collections
 
+
 class KindleLib:
     def __init__(self):
         logzero.logfile(
@@ -36,13 +37,17 @@ class KindleLib:
         while node:
             term = node.surface
             pos = node.feature.split(',')[0]
-            if not re.match(r'^.{0,1}$', term) and pos in ['名詞','動詞']:
+            if not re.match(r'^.{0,1}$', term) and pos in ['名詞', '動詞']:
                 term_list.append(term)
             node = node.next
         return term_list
 
+
 if(__name__ == '__main__'):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--version', action='version', version=f'{__version__}')
+    parser.add_argument(
+        '--version',
+        action='version',
+        version=f'{__version__}')
     args = parser.parse_args()
     KindleLib().main(args)

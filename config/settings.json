@@ -1,4 +1,5 @@
 {
     "logfile" : "../log/info.log",
+    "mecab_param": "-Osimple -d /usr/local/etc/mecab-ipadic-neologd",
     "kindle_lib_path": "../work/kindle_lib.tsv"
 }

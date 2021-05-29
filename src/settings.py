@@ -5,9 +5,11 @@ __version__ = "0.1.0"
 import os
 import json
 
+
 def load_json(path):
     with open(_build_path(path), 'r') as conf:
         return json.load(conf)
+
 
 def _build_path(path):
     abspath = os.path.join(os.path.dirname(os.path.abspath(__file__)), path)
@@ -17,5 +19,8 @@ def _build_path(path):
     else:
         raise FileNotFoundError(abspath)
 
+
 settings_dict = load_json('../config/settings.json')
+logfile = settings_dict['kindle_lib_path']
 kindle_lib_path = settings_dict['kindle_lib_path']
+mecab_param = settings_dict['mecab_param']
