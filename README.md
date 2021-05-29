@@ -7,5 +7,5 @@
 
 ```bash
 # docker-compose build
-# docker-compose run --entrypoint "python /data/src/main.py" mecab-test '私はpythonでmecabを扱うテストをしています。'
+# docker-compose run --entrypoint 'python /data/src/mecab_tokenize.py' mecab-test '私はmecabをPythonで取り扱うテストをしています。mecabは日本語形態素解析をするためのツールです。'
 ```
