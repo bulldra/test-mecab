@@ -18,14 +18,26 @@ class EpubTokenize:
             loglevel=20, maxBytes=1e6, backupCount=3
         )
         self.logger = logzero.logger
+        self.mecab = mecab_tokenize.MecabTokenize()
+
+    def extract_epub_text(self, path):
+        text = ''
+        for item in epub.read_epub(path).get_items():
+            if item.get_type() == ebooklib.ITEM_DOCUMENT:
+                text += re.sub(r'<.+?>', '', item.get_content().decode())
+        return text
+
+    def freq(self, text):
+        df = self.mecab.freq(text, count=10)
+        df = df[df['info1'].isin(['名詞', '動詞'])]
+        df = df[df['term'].str.len() >= 2]
+        return df
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
-        text = ''
-        for item in epub.read_epub(args.args1).get_items():
-            if item.get_type() == ebooklib.ITEM_DOCUMENT:
-                text += re.sub(r'<.+?>', '', item.get_content().decode())
-        print(mecab_tokenize.MecabTokenize().freq(text))
+        text = self.extract_epub_text(args.path)
+        df = self.freq(text)
+        df.to_csv(args.path + '.freq', sep='\t')
 
 
 if(__name__ == '__main__'):
@@ -34,6 +46,6 @@ if(__name__ == '__main__'):
         '--version',
         action='version', version=f'{__version__}'
     )
-    parser.add_argument('args1')
+    parser.add_argument('path')
     args = parser.parse_args()
     EpubTokenize().main(args)
