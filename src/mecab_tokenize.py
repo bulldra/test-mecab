@@ -28,7 +28,7 @@ class MecabTokenize:
     def freq(self, text, count=1):
         s = self.tokenize(text).groupby(['term', 'info1', 'info2']).size()
         s = s[s >= count].sort_values(ascending=False)
-        return s.to_frame('freq').reset_index()
+        return s.reset_index(name='freq')
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
