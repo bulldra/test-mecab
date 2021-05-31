@@ -28,8 +28,10 @@ class EpubTokenize:
         return text
 
     def freq(self, text):
-        df = self.mecab.freq(text, count=10)
-        return df[df['info1'].isin(['名詞', '動詞']) & (df['term'].str.len() >= 2)]
+        df = self.mecab.freq(text)
+        df = df[df['freq'] >= 10]
+        df = df[df['info1'].isin(['名詞', '動詞']) & (df['term'].str.len() >= 2)]
+        return df
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
