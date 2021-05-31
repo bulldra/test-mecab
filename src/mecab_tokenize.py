@@ -17,7 +17,6 @@ class MecabTokenize:
         )
         self.logger = logzero.logger
         self.mecab = MeCab.Tagger(settings.mecab_param)
-        pandas.set_option('display.max_rows', None)
 
     def tokenize(self, text):
         p = [li.split('\t') for li in self.mecab.parse(text).splitlines()]
@@ -25,10 +24,17 @@ class MecabTokenize:
         p = [{'term': li[0], 'info1': li[1], 'info2': li[2]} for li in p]
         return pandas.DataFrame(p)
 
-    def freq(self, text, count=1):
-        s = self.tokenize(text).groupby(['term', 'info1', 'info2']).size()
-        s = s[s >= count].sort_values(ascending=False)
+    def freq(self, text, groupby=['term', 'info1', 'info2']):
+        s = self.tokenize(text).groupby(groupby).size()
+        s = s.sort_values(ascending=False)
         return s.reset_index(name='freq')
+
+    def term_freq(self, freq):
+        all_freq = freq['freq'].sum()
+        term_freq = freq['freq'].map(lambda freq: (freq / all_freq))
+        df = pandas.DataFrame(freq)
+        df['term_freq'] = term_freq
+        return df
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
