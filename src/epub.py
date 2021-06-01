@@ -20,7 +20,7 @@ class EpubTokenize:
         self.logger = logzero.logger
         self.mecab = mecab_tokenize.MecabTokenize()
 
-    def extract_epub_text(self, path):
+    def extract(self, path):
         text = ''
         for item in epub.read_epub(path).get_items():
             if item.get_type() == ebooklib.ITEM_DOCUMENT:
@@ -35,7 +35,7 @@ class EpubTokenize:
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
-        text = self.extract_epub_text(args.path)
+        text = self.extract(args.path)
         df = self.freq(text)
         df.to_csv(args.path + '.freq', sep='\t')
 
