@@ -4,12 +4,19 @@ __version__ = "0.1.0"
 
 import lxml.html
 import lxml.html.clean
+import requests
 import mecab_tokenize
 
 
 class AozoraTokenize:
     def __init__(self):
         self.mecab = mecab_tokenize.MecabTokenize()
+
+    def request(self, url):
+        res = requests.get(url)
+        res.raise_for_status()
+        res.encoding = 'shift_jis'
+        return res.text.encode('shift_jis')
 
     def read(self, path):
         with open(path, 'r', encoding='shift_jis') as f:
@@ -27,7 +34,7 @@ class AozoraTokenize:
 
     def freq(self, text):
         df = self.mecab.freq(text)
-        return df[df['info1'].isin(['名詞', '動詞']) & (df['term'].str.len() >= 2)]
+        return df[df['info1'].isin(['名詞', '動詞'])]
 
     def term_freq(self, freq):
         return self.mecab.term_freq(freq)

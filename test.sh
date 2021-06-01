@@ -1,1 +1,1 @@
-docker-compose run -e "PYTHONPATH=./" --entrypoint "pytest /data/tests/" mecab-test
+docker-compose run -e "PYTHONPATH=./" --entrypoint "pytest -s /data/tests/" mecab-test
