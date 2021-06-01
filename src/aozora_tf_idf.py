@@ -7,6 +7,8 @@ import math
 import logzero
 import settings
 import aozora
+import glob
+import pandas
 
 
 class AozoraTokenizeTfIdf:
@@ -18,53 +20,50 @@ class AozoraTokenizeTfIdf:
         self.logger = logzero.logger
         self.aozora = aozora.AozoraTokenize()
 
-    def execute(self, path):
-        text = self.aozora.read(path)
-        text = self.aozora.extract(text)
-        freq = self.aozora.freq(text)
-        return freq
+    def freq(self, path):
+        text = self.aozora.extract(self.aozora.read(path))
+        return self.aozora.freq(text, info=['名詞'])
+
+    def docs_freq(self, docs_path):
+        freq_list = []
+        for path in docs_path:
+            freq = self.freq(path)
+            freq['doc_id'] = path
+            freq_list.append(freq)
+
+        # 単語・文書ID(path)でまとめる
+        docs_freq = pandas.concat(freq_list)
+        docs_freq = docs_freq.groupby(['term', 'doc_id']).sum()
+        docs_freq = docs_freq.reset_index()
+        return docs_freq
 
     def main(self, args):
         self.logger.info(f'{__file__} {__version__} {args}')
 
         # TF作成
-        target = self.execute(args.path)
+        target = self.freq(args.path)
         target = self.aozora.term_freq(target)
 
         # 全文書データ作成
-        docs_path = [
-            '../work/56645_58203.html',
-            '../work/57105_59659.html',
-            '../work/57181_59566.html',
-            '../work/57240_60918.html',
-            '../work/57849_71930.html',
-        ]
-        docs = None
-        for path in docs_path:
-            doc_freq = self.execute(path)
-            doc_freq['doc_id'] = path
-            if docs is None:
-                docs = doc_freq
-            else:
-                docs = docs.append(doc_freq)
-
-        # 単語・文書ID(path)でまとめる
-        docs = docs.groupby(['term', 'doc_id']).sum()
-        docs = docs.reset_index()
+        docs_path = glob.glob('../work/*.html')
+        docs_freq = self.docs_freq(docs_path)
 
         # 単語出現文書数
         target['doc_freq'] = target['term'].map(
-            lambda t: docs[docs['term'] == t].shape[0]
+            lambda t: (docs_freq['term'] == t).sum()
         )
 
         # IDF
+        doc_num = len(docs_path)
         target['idf'] = target['doc_freq'].map(
-            lambda t: math.log(len(docs_path) / t)
+            lambda df: math.log(doc_num / df)
         )
 
         # tf-idf
         target['tf-idf'] = target['term_freq'] * target['idf']
-        target = target.sort_values('tf-idf', ascending=False)
+        target = target.sort_values('tf-idf', ascending=True)
+        target = target.tail(20)
+        target = target.reset_index(drop=True)
 
         # ファイル出力
         out_path = args.path + '.tsv'

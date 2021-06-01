@@ -32,9 +32,9 @@ class AozoraTokenize:
         html = lxml.html.fromstring(html)
         return html.find_class('main_text')[0].text_content()
 
-    def freq(self, text):
+    def freq(self, text, info=['名詞', '動詞']):
         df = self.mecab.freq(text)
-        return df[df['info1'].isin(['名詞', '動詞'])]
+        return df[df['info1'].isin(info)]
 
     def term_freq(self, freq):
         return self.mecab.term_freq(freq)
